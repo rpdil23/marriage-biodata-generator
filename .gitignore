@@ -88,9 +88,6 @@ build/
 # Webpack build output
 build/
 
-# TypeScript build output
-lib/
-
 # Storybook build outputs
 .out
 .storybook-out
