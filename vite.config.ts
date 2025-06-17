@@ -5,7 +5,7 @@ import { VitePWA } from "vite-plugin-pwa";
 
 const manifestForPlugIn = {
   registerType: "prompt",
-  includeAssests: ["favicon.ico", "apple-touc-icon.png", "masked-icon.svg"],
+  includeAssets: ["favicon.ico", "apple-touch-icon.png", "masked-icon.svg"], // Corrected typo: "includeAssests" → "includeAssets"
   manifest: {
     name: "திருமண பயோடேட்டா - Marriage Biodata Generator",
     short_name: "Biodata Generator",
@@ -13,25 +13,25 @@ const manifestForPlugIn = {
       "Create beautiful marriage biodata with traditional astrological charts. Generate professional biodata in Tamil and English with instant PDF download.",
     icons: [
       {
-        src: "/android-chrome-192x192.png",
+        src: "/marriage-biodata-generator/android-chrome-192x192.png", // Add base path
         sizes: "192x192",
         type: "image/png",
         purpose: "favicon",
       },
       {
-        src: "/android-chrome-512x512.png",
+        src: "/marriage-biodata-generator/android-chrome-512x512.png", // Add base path
         sizes: "512x512",
         type: "image/png",
         purpose: "favicon",
       },
       {
-        src: "/apple-touch-icon.png",
+        src: "/marriage-biodata-generator/apple-touch-icon.png", // Add base path
         sizes: "180x180",
         type: "image/png",
         purpose: "apple touch icon",
       },
       {
-        src: "/maskable_icon.png",
+        src: "/marriage-biodata-generator/maskable_icon.png", // Add base path
         sizes: "512x512",
         type: "image/png",
         purpose: "any maskable",
@@ -40,8 +40,8 @@ const manifestForPlugIn = {
     theme_color: "#171717",
     background_color: "#f0e7db",
     display: "standalone",
-    scope: "/",
-    start_url: "/",
+    scope: "/marriage-biodata-generator/", // Match the base path
+    start_url: "/marriage-biodata-generator/", // Match the base path
     orientation: "portrait",
   },
 };
