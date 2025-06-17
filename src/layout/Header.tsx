@@ -8,7 +8,9 @@ const Header: React.FC = () => {
           <div className="flex justify-between items-center py-6">
             <a href="/" className="flex items-center space-x-2">
               <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center animate-glow">
-                <span className="text-white font-bold text-xl">💍</span>
+                <span className="text-white font-bold text-xl">
+                  <img src="logo.png" alt="Wedding Ring" />
+                </span>
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-white">

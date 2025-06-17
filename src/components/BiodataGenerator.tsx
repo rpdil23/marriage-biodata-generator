@@ -497,7 +497,7 @@ export const BiodataGenerator = () => {
     <div className="min-h-screen py-8 px-4">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2">
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2">
             தமிழ் பயோடேட்டா ஜெனரேட்டர்
           </h1>
           <p className="text-gray-600">Tamil Biodata Generator</p>
