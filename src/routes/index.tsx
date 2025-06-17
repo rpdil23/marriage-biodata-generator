@@ -5,7 +5,7 @@ import About from "../pages/About";
 
 const Router = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/marriage-biodata-generator">
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/about" element={<About />} />
