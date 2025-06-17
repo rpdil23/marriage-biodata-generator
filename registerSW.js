@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/marriage-biodata-generator/sw.js', { scope: '/marriage-biodata-generator/' })})}
