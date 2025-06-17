@@ -22,8 +22,12 @@ jobs:
         with:
           bun-version: latest
 
-      - name: Install dependencies 🔧
-        run: bun install
+      - name: Clear cache and install dependencies 🔧
+        run: |
+          rm -rf node_modules
+          rm -f package-lock.json
+          npm cache clean --force
+          bun install
 
       - name: Build 🏗️
         run: bun run build
