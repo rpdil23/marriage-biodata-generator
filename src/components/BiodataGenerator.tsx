@@ -334,33 +334,35 @@ export const BiodataGenerator = () => {
       { label: "5. பிறந்த ஊர்", getValue: (data) => data.placeOfBirth },
       { label: "6. கல்வி", getValue: (data) => data.education },
       { label: "7. வேலை", getValue: (data) => data.jobDetails },
-      { label: "8. நட்சத்திரம்", getValue: (data) => data.rasiNakshatram },
-      { label: "9. ராசி", getValue: (data) => data.house1 },
-      { label: "10. லக்னம்", getValue: (data) => data.lagnam },
-      { label: "11. ராகு கேது தோசம்", getValue: (data) => data.dosham },
-      { label: "12. இருப்பிடம்", getValue: (data) => data.residence },
-      { label: "13. வருமானம்", getValue: (data) => data.income },
-      { label: "14. இனம்", getValue: (data) => data.caste },
       {
-        label: "15. உயரம்",
+        label: "8. ராசி - நட்சத்திரம்",
+        getValue: (data) => data.rasiNakshatram,
+      },
+      { label: "9. லக்னம்", getValue: (data) => data.lagnam },
+      { label: "10. ராகு கேது தோசம்", getValue: (data) => data.dosham },
+      { label: "11. இருப்பிடம்", getValue: (data) => data.residence },
+      { label: "12. வருமானம்", getValue: (data) => data.income },
+      { label: "13. இனம்", getValue: (data) => data.caste },
+      {
+        label: "14. உயரம்",
         getValue: (data) =>
           `${data.heightCm} CM / ${(
             parseFloat(data.heightCm) * 0.0328084
           ).toFixed(2)} ft`,
       },
-      { label: "16. எடை", getValue: (data) => data.weight },
-      { label: "17. நிறம்", getValue: (data) => data.color },
+      { label: "15. எடை", getValue: (data) => data.weight },
+      { label: "16. நிறம்", getValue: (data) => data.color },
     ];
 
     const familyFields = [
-      { label: "18. தந்தை", getValue: (data) => data.fatherName },
-      { label: "19. தந்தை", getValue: (data) => data.fatherJob },
-      { label: "20. தாய்", getValue: (data) => data.motherName },
-      { label: "21. தாய்", getValue: (data) => data.motherJob },
-      { label: "22. உடன் பிறந்தவர்", getValue: (data) => data.siblings },
-      { label: "23. முகவரி", getValue: (data) => data.address },
-      { label: "24. தொலைபேசி எண்கள்", getValue: (data) => data.phoneNumber },
-      { label: "25. சொத்து விவரம்", getValue: (data) => data.assetDetails },
+      { label: "17. தந்தை", getValue: (data) => data.fatherName },
+      { label: "18. தந்தை", getValue: (data) => data.fatherJob },
+      { label: "19. தாய்", getValue: (data) => data.motherName },
+      { label: "20. தாய்", getValue: (data) => data.motherJob },
+      { label: "21. உடன் பிறந்தவர்", getValue: (data) => data.siblings },
+      { label: "22. முகவரி", getValue: (data) => data.address },
+      { label: "23. தொலைபேசி எண்கள்", getValue: (data) => data.phoneNumber },
+      { label: "24. சொத்து விவரம்", getValue: (data) => data.assetDetails },
     ];
 
     const content = `
