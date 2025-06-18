@@ -54,6 +54,30 @@ export const AstrologicalDetailsSection: React.FC<Props> = ({
             className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all backdrop-blur-sm bg-white/80"
           />
         </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            ராகு கேது தோசம் (Rahu Ketu Dosham)
+          </label>
+          <select
+            value={formData.dosham}
+            onChange={(e) => onInputChange("dosham", e.target.value)}
+            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all backdrop-blur-sm bg-white/80"
+          >
+            <option value="">தேர்ந்தெடுக்க (Select)</option>
+            <option value="ஆம்">ஆம் (Yes)</option>
+            <option value="இல்லை">இல்லை (No)</option>
+          </select>
+        </div>
+        <div className="md:col-span-2">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Other Details (Other Details)
+          </label>
+          <textarea
+            value={formData.otherDetails}
+            onChange={(e) => onInputChange("otherDetails", e.target.value)}
+            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all backdrop-blur-sm bg-white/80"
+          />
+        </div>
       </div>
 
       <div className="backdrop-blur-sm bg-white/90 rounded-2xl p-6 shadow-lg border border-white/30">
