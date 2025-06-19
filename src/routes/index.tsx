@@ -10,6 +10,7 @@ const Router = () => {
     <BrowserRouter basename="/marriage-biodata-generator">
       <Routes>
         <Route path="/" element={<Index />} />
+        <Route path="/home" element={<Index />} />
         <Route path="/about" element={<About />} />
         <Route path="/terms-and-conditions" element={<TermsAndPrivacy />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
