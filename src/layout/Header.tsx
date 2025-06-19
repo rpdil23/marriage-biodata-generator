@@ -6,10 +6,7 @@ const Header: React.FC = () => {
       <div className="glass-dark">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
-            <a
-              href="marriage-biodata-generator"
-              className="flex items-center space-x-2"
-            >
+            <a href="home" className="flex items-center space-x-2">
               <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center animate-glow">
                 <span className="text-white font-bold text-xl">
                   <img src="logo.png" alt="Wedding Ring" />
@@ -32,7 +29,7 @@ const Header: React.FC = () => {
                 Features
               </a> */}
               <a
-                href="marriage-biodata-generator"
+                href="home"
                 className="text-white hover:text-blue-300 transition-colors duration-300"
               >
                 Generator
