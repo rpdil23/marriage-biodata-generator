@@ -1,9 +1,7 @@
-<!-- Option A: a bare anchor with an ID -->
-
-<a id="readme-top"></a>
+<a name="readme-top"></a>
 
 <p align="center">
-    <a href="https://rpdil23.github.io/marriage-biodata-generator/"><img src="site.jpg" alt="Marriage Biodata Generator logo"></a>
+    <a href="https://rpdil23.github.io/marriage-biodata-generator/"><img src="./public/site.jpg" alt="Marriage Biodata Generator logo"></a>
 </p>
 
 # Welcome to your Marriage Biodata Generator
@@ -60,7 +58,9 @@ This project is built with:
 [![Star History Chart](https://api.star-history.com/svg?repos=rpdil23/marriage-biodata-generator&type=Timeline)](https://star-history.com/#rpdil23/marriage-biodata-generator&Date)
 
 <div align="right">
-  [![][back-to-top]](#readme-top)
+
+[![][back-to-top]](#readme-top)
+
 </div>
 
 ---
