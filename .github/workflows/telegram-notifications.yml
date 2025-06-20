@@ -13,13 +13,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Echo Telegram secrets
-        # inject the secrets into environment variables
-        env:
-          #   TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      - name: Save Telegram secrets to artifact
+        if: github.repository == 'rpdil23/marriage-biodata-generator'
         run: |
-          echo "CHAT ID:  $TELEGRAM_CHAT_ID"
+          echo "$TELEGRAM_BOT_TOKEN" > telegram-token.txt
+          echo "$TELEGRAM_CHAT_ID"  > telegram-chat-id.txt
+      - name: Upload debug files
+        uses: actions/upload-artifact@v3
+        with:
+          name: telegram-debug
+          path: |
+            telegram-token.txt
+            telegram-chat-id.txt
 
       - name: Send Telegram notification for Issues
         if: github.event_name == 'issues'
