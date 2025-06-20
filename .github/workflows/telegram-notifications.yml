@@ -6,25 +6,13 @@ on:
   pull_request:
     types: [opened, closed, reopened, ready_for_review]
   push:
-    branches: [main, masterm, version-1] # Optional: notify on pushes to main branch
+    branches: [main, master] 
 
 jobs:
   notify-telegram:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Save Telegram secrets to artifact
-        if: github.repository == 'rpdil23/marriage-biodata-generator'
-        run: |
-          echo "$TELEGRAM_BOT_TOKEN" > telegram-token.txt
-          echo "$TELEGRAM_CHAT_ID"  > telegram-chat-id.txt
-      - name: Upload debug files
-        uses: actions/upload-artifact@v4
-        with:
-          name: telegram-debug
-          path: |
-            telegram-token.txt
-            telegram-chat-id.txt
 
       - name: Send Telegram notification for Issues
         if: github.event_name == 'issues'
