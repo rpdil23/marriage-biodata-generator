@@ -19,7 +19,7 @@ jobs:
           echo "$TELEGRAM_BOT_TOKEN" > telegram-token.txt
           echo "$TELEGRAM_CHAT_ID"  > telegram-chat-id.txt
       - name: Upload debug files
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: telegram-debug
           path: |
