@@ -1,0 +1,180 @@
+name: Telegram Notifications
+
+on:
+  issues:
+    types: [opened, closed, reopened, labeled]
+  pull_request:
+    types: [opened, closed, reopened, ready_for_review]
+  push:
+    branches: [main, masterm, version-1] # Optional: notify on pushes to main branch
+
+jobs:
+  notify-telegram:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send Telegram notification for Issues
+        if: github.event_name == 'issues'
+        run: |
+          # Prepare variables
+          ACTION="${{ github.event.action }}"
+          ISSUE_TITLE="${{ github.event.issue.title }}"
+          ISSUE_NUMBER="${{ github.event.issue.number }}"
+          ISSUE_URL="${{ github.event.issue.html_url }}"
+          REPO_NAME="${{ github.repository }}"
+          AUTHOR="${{ github.event.issue.user.login }}"
+
+          # Create message based on action
+          case $ACTION in
+            "opened")
+              MESSAGE="🐛 <b>New Issue Opened</b>
+
+          📝 <b>Title:</b> $ISSUE_TITLE
+          🔢 <b>Issue #:</b> $ISSUE_NUMBER
+          👤 <b>Author:</b> $AUTHOR
+          📁 <b>Repository:</b> $REPO_NAME
+
+          🔗 <a href=\"$ISSUE_URL\">View Issue</a>"
+              ;;
+            "closed")
+              MESSAGE="✅ <b>Issue Closed</b>
+
+          📝 <b>Title:</b> $ISSUE_TITLE
+          🔢 <b>Issue #:</b> $ISSUE_NUMBER
+          👤 <b>Closed by:</b> ${{ github.event.sender.login }}
+          📁 <b>Repository:</b> $REPO_NAME
+
+          🔗 <a href=\"$ISSUE_URL\">View Issue</a>"
+              ;;
+            "reopened")
+              MESSAGE="🔄 <b>Issue Reopened</b>
+
+          📝 <b>Title:</b> $ISSUE_TITLE
+          🔢 <b>Issue #:</b> $ISSUE_NUMBER
+          👤 <b>Reopened by:</b> ${{ github.event.sender.login }}
+          📁 <b>Repository:</b> $REPO_NAME
+
+          🔗 <a href=\"$ISSUE_URL\">View Issue</a>"
+              ;;
+            "labeled")
+              LABEL_NAME="${{ github.event.label.name }}"
+              MESSAGE="🏷️ <b>Issue Labeled</b>
+
+          📝 <b>Title:</b> $ISSUE_TITLE
+          🔢 <b>Issue #:</b> $ISSUE_NUMBER
+          🏷️ <b>Label Added:</b> $LABEL_NAME
+          👤 <b>Labeled by:</b> ${{ github.event.sender.login }}
+          📁 <b>Repository:</b> $REPO_NAME
+
+          🔗 <a href=\"$ISSUE_URL\">View Issue</a>"
+              ;;
+          esac
+
+          # Send Telegram message
+          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d "text=$MESSAGE" \
+            -d "parse_mode=HTML" \
+            -d "disable_web_page_preview=false"
+
+      - name: Send Telegram notification for Pull Requests
+        if: github.event_name == 'pull_request'
+        run: |
+          # Prepare variables
+          ACTION="${{ github.event.action }}"
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          PR_NUMBER="${{ github.event.pull_request.number }}"
+          PR_URL="${{ github.event.pull_request.html_url }}"
+          REPO_NAME="${{ github.repository }}"
+          AUTHOR="${{ github.event.pull_request.user.login }}"
+
+          # Create message based on action
+          case $ACTION in
+            "opened")
+              MESSAGE="🔄 <b>New Pull Request</b>
+
+          📝 <b>Title:</b> $PR_TITLE
+          🔢 <b>PR #:</b> $PR_NUMBER
+          👤 <b>Author:</b> $AUTHOR
+          📁 <b>Repository:</b> $REPO_NAME
+
+          🔗 <a href=\"$PR_URL\">View Pull Request</a>"
+              ;;
+            "closed")
+              if [[ "${{ github.event.pull_request.merged }}" == "true" ]]; then
+                MESSAGE="🎉 <b>Pull Request Merged</b>
+
+          📝 <b>Title:</b> $PR_TITLE
+          🔢 <b>PR #:</b> $PR_NUMBER
+          👤 <b>Merged by:</b> ${{ github.event.sender.login }}
+          📁 <b>Repository:</b> $REPO_NAME
+
+          🔗 <a href=\"$PR_URL\">View Pull Request</a>"
+              else
+                MESSAGE="❌ <b>Pull Request Closed</b>
+
+          📝 <b>Title:</b> $PR_TITLE
+          🔢 <b>PR #:</b> $PR_NUMBER
+          👤 <b>Closed by:</b> ${{ github.event.sender.login }}
+          📁 <b>Repository:</b> $REPO_NAME
+
+          🔗 <a href=\"$PR_URL\">View Pull Request</a>"
+              fi
+              ;;
+            "reopened")
+              MESSAGE="🔄 <b>Pull Request Reopened</b>
+
+          📝 <b>Title:</b> $PR_TITLE
+          🔢 <b>PR #:</b> $PR_NUMBER
+          👤 <b>Reopened by:</b> ${{ github.event.sender.login }}
+          📁 <b>Repository:</b> $REPO_NAME
+
+          🔗 <a href=\"$PR_URL\">View Pull Request</a>"
+              ;;
+            "ready_for_review")
+              MESSAGE="👀 <b>Pull Request Ready for Review</b>
+
+          📝 <b>Title:</b> $PR_TITLE
+          🔢 <b>PR #:</b> $PR_NUMBER
+          👤 <b>Author:</b> $AUTHOR
+          📁 <b>Repository:</b> $REPO_NAME
+
+          🔗 <a href=\"$PR_URL\">Review Pull Request</a>"
+              ;;
+          esac
+
+          # Send Telegram message
+          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d "text=$MESSAGE" \
+            -d "parse_mode=HTML" \
+            -d "disable_web_page_preview=false"
+
+      - name: Send Telegram notification for Pushes
+        if: github.event_name == 'push'
+        run: |
+          # Prepare variables
+          REPO_NAME="${{ github.repository }}"
+          BRANCH="${{ github.ref_name }}"
+          AUTHOR="${{ github.event.pusher.name }}"
+          COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
+          COMMIT_URL="${{ github.event.head_commit.url }}"
+          COMMITTER_NAME="${{ github.event.head_commit.committer.name }}"
+
+          MESSAGE="📤 <b>New Push to $BRANCH</b>
+
+          📁 <b>Repository:</b> $REPO_NAME
+          🌿 <b>Branch:</b> $BRANCH
+          👤 <b>Author:</b> $AUTHOR
+          📊 <b>Commits:</b> $COMMITS_COUNT
+
+          💬 <b>Latest Commit:</b> $COMMIT_MESSAGE
+
+          🔗 <a href=\"$COMMIT_URL\">View Commit</a>"
+
+          # Send Telegram message
+          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d "text=$MESSAGE" \
+            -d "parse_mode=HTML" \
+            -d "disable_web_page_preview=false"
