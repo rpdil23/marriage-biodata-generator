@@ -63,6 +63,13 @@ export const Footer = () => {
             <div className="space-y-2 text-gray-300">
               <p>Built with modern web technologies</p>
               <p>Designed for Tamil matrimonial traditions</p>
+
+              <p className="text-sm text-gray-400 mt-4">
+                &copy; 2025 Marriage Biodata Generator. All rights reserved.
+              </p>
+              <div className="cursor-pointer" onClick={() => handleTeamClick()}>
+                <span className="mr-1">&hearts; Made with React &hearts;</span>
+              </div>
               <div className="flex items-center gap-2">
                 <a
                   href="https://github.com/rpdil23/marriage-biodata-generator"
@@ -82,13 +89,6 @@ export const Footer = () => {
                   </svg>
                   <span>GitHub</span>
                 </a>
-              </div>
-
-              <p className="text-sm text-gray-400 mt-4">
-                &copy; 2025 Marriage Biodata Generator. All rights reserved.
-              </p>
-              <div className="cursor-pointer" onClick={() => handleTeamClick()}>
-                <span className="mr-1">&hearts; Made with React &hearts;</span>
               </div>
             </div>
           </div>
