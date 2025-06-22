@@ -18,109 +18,122 @@ export const FamilyDetailsSection: React.FC<Props> = ({
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            தந்தை பெயர் (Father's Name)
+            தந்தை பெயர் (Father's Name) <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
             value={formData.fatherName}
             onChange={(e) => onInputChange("fatherName", e.target.value)}
             className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all backdrop-blur-sm bg-white/80"
+            required
           />
         </div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            தந்தை பணி விவரம் (Father's Job Details)
+            தந்தை பணி விவரம் (Father's Job Details){" "}
+            <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
             value={formData.fatherJob}
             onChange={(e) => onInputChange("fatherJob", e.target.value)}
             className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all backdrop-blur-sm bg-white/80"
+            required
           />
         </div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            தாய் பெயர் (Mother's Name)
+            தாய் பெயர் (Mother's Name) <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
             value={formData.motherName}
             onChange={(e) => onInputChange("motherName", e.target.value)}
             className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all backdrop-blur-sm bg-white/80"
+            required
           />
         </div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            தாய் பணி விவரம் (Mother's Job Details)
+            தாய் பணி விவரம் (Mother's Job Details){" "}
+            <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
             value={formData.motherJob}
             onChange={(e) => onInputChange("motherJob", e.target.value)}
             className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all backdrop-blur-sm bg-white/80"
+            required
           />
         </div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            உடன் பிறந்தவர்கள் (Siblings)
+            உடன் பிறந்தவர்கள் (Siblings) <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
             value={formData.siblings}
             onChange={(e) => onInputChange("siblings", e.target.value)}
             className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all backdrop-blur-sm bg-white/80"
+            required
           />
         </div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            தொலைபேசி எண் (Phone Number)
+            தொலைபேசி எண் (Phone Number) <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
             value={formData.phoneNumber}
             onChange={(e) => onInputChange("phoneNumber", e.target.value)}
             className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all backdrop-blur-sm bg-white/80"
+            required
           />
         </div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            வாட்ஸ்ஆப் எண் (WhatsApp Number)
+            வாட்ஸ்ஆப் எண் (WhatsApp Number){" "}
+            <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
             value={formData.whatsappNumber}
             onChange={(e) => onInputChange("whatsappNumber", e.target.value)}
             className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all backdrop-blur-sm bg-white/80"
+            required
           />
         </div>
 
         <div className="md:col-span-2">
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            முகவரி (Address)
+            முகவரி (Address) <span className="text-red-500">*</span>
           </label>
           <textarea
             value={formData.address}
             onChange={(e) => onInputChange("address", e.target.value)}
             rows={3}
             className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all backdrop-blur-sm bg-white/80"
+            required
           />
         </div>
 
         <div className="md:col-span-1">
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            சொத்து விவரம் (Asset Details)
+            சொத்து விவரம் (Asset Details){" "}
+            <span className="text-red-500">*</span>
           </label>
           <textarea
             value={formData.assetDetails}
             onChange={(e) => onInputChange("assetDetails", e.target.value)}
             rows={3}
             className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all backdrop-blur-sm bg-white/80"
+            required
           />
         </div>
       </div>

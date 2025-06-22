@@ -119,12 +119,93 @@ export const BiodataGenerator = () => {
     }));
   };
 
+  // Validation function to check all required fields
+  const validateRequiredFields = (formData) => {
+    const requiredFields = [
+      // Personal Details
+      { field: "name", label: "பெயர் (Name)" },
+      { field: "gender", label: "பாலினம் (Gender)" },
+      { field: "dateOfBirth", label: "பிறந்த தேதி (Date of Birth)" },
+      { field: "timeOfBirth", label: "பிறந்த நேரம் (Time of Birth)" },
+      { field: "placeOfBirth", label: "பிறந்த ஊர் (Place of Birth)" },
+      { field: "residence", label: "இருப்பிடம் (Residence)" },
+      { field: "education", label: "படிப்பு (Education)" },
+      { field: "jobDetails", label: "பணி விவரங்கள் (Job Details)" },
+      { field: "income", label: "வருமானம் (Income)" },
+      { field: "caste", label: "ஜாதி (Caste)" },
+      { field: "heightCm", label: "உயரம் (Height)" },
+      { field: "weight", label: "எடை (Weight)" },
+      { field: "color", label: "நிறம் (Color)" },
+
+      // Family Details
+      { field: "fatherName", label: "தந்தை பெயர் (Father's Name)" },
+      { field: "fatherJob", label: "தந்தை பணி விவரம் (Father's Job Details)" },
+      { field: "motherName", label: "தாய் பெயர் (Mother's Name)" },
+      { field: "motherJob", label: "தாய் பணி விவரம் (Mother's Job Details)" },
+      { field: "siblings", label: "உடன் பிறந்தவர்கள் (Siblings)" },
+      { field: "phoneNumber", label: "தொலைபேசி எண் (Phone Number)" },
+      { field: "whatsappNumber", label: "வாட்ஸ்ஆப் எண் (WhatsApp Number)" },
+      { field: "address", label: "முகவரி (Address)" },
+      { field: "assetDetails", label: "சொத்து விவரம் (Asset Details)" },
+
+      // Astrological Details
+      { field: "lagnam", label: "லக்னம் (Lagnam)" },
+      {
+        field: "rasiNakshatram",
+        label: "ராசி - நட்சத்திரம் (Rasi - Nakshatram)",
+      },
+      { field: "dosham", label: "ராகு கேது தோசம் (Rahu Ketu Dosham)" },
+
+      // House fields (1-24)
+      // ...Array.from({ length: 24 }, (_, i) => ({
+      //   field: `house${i + 1}`,
+      //   label: `House ${i + 1}`,
+      // })),
+    ];
+
+    const missingFields = [];
+
+    for (const { field, label } of requiredFields) {
+      const value = formData[field];
+      if (!value || value.toString().trim() === "") {
+        missingFields.push(label);
+      }
+    }
+
+    return {
+      isValid: missingFields.length === 0,
+      missingFields,
+    };
+  };
+
+  // Show validation error message
+  const showValidationError = (missingFields) => {
+    const errorMessage = `கீழ்க்கண்ட அவசியமான புலங்களை பூர்த்தி செய்யவும் (Please fill the following required fields):\n\n${missingFields
+      .slice(0, 10)
+      .join("\n")}${
+      missingFields.length > 10
+        ? `\n\n... and ${missingFields.length - 10} more fields`
+        : ""
+    }`;
+
+    alert(errorMessage);
+  };
+
   const generateFormattedPDF = () => {
+    // Validate required fields first
+    const validation = validateRequiredFields(formData);
+
+    if (!validation.isValid) {
+      showValidationError(validation.missingFields);
+      return;
+    }
+
     // Load jsPDF from CDN
     const script = document.createElement("script");
     script.src =
       "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
     script.onload = () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const { jsPDF } = (window as any).jspdf;
 
       // Create PDF with Unicode support
@@ -154,7 +235,9 @@ export const BiodataGenerator = () => {
     html2canvasScript.src =
       "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
     html2canvasScript.onload = () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const { jsPDF } = (window as any).jspdf;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const html2canvas = (window as any).html2canvas;
 
       const tempDiv = document.createElement("div");
@@ -326,6 +409,14 @@ export const BiodataGenerator = () => {
 
   // Tamil PDF generation
   const generatePDFWithHTML2Canvas = () => {
+    // Validate required fields first
+    const validation = validateRequiredFields(formData);
+
+    if (!validation.isValid) {
+      showValidationError(validation.missingFields);
+      return;
+    }
+
     const tamilFields = [
       { label: "1. பெயர்", getValue: (data) => data.name },
       { label: "2. பாலினம்", getValue: (data) => data.gender },
@@ -399,6 +490,14 @@ export const BiodataGenerator = () => {
 
   // English PDF generation
   const generateTransliteratedPDF = () => {
+    // Validate required fields first
+    const validation = validateRequiredFields(formData);
+
+    if (!validation.isValid) {
+      showValidationError(validation.missingFields);
+      return;
+    }
+
     const englishFields = [
       { label: "1. Name", getValue: (data) => data.name },
       { label: "2. Gender", getValue: (data) => data.gender },
