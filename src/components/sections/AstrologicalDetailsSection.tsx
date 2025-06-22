@@ -21,25 +21,28 @@ export const AstrologicalDetailsSection: React.FC<Props> = ({
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            லக்னம் (Lagnam)
+            லக்னம் (Lagnam) <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
             value={formData.lagnam}
             onChange={(e) => onInputChange("lagnam", e.target.value)}
             className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all backdrop-blur-sm bg-white/80"
+            required
           />
         </div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            ராசி - நட்சத்திரம் (Rasi - Nakshatram)
+            ராசி - நட்சத்திரம் (Rasi - Nakshatram){" "}
+            <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
             value={formData.rasiNakshatram}
             onChange={(e) => onInputChange("rasiNakshatram", e.target.value)}
             className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all backdrop-blur-sm bg-white/80"
+            required
           />
         </div>
 
@@ -56,12 +59,14 @@ export const AstrologicalDetailsSection: React.FC<Props> = ({
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            ராகு கேது தோசம் (Rahu Ketu Dosham)
+            ராகு கேது தோசம் (Rahu Ketu Dosham){" "}
+            <span className="text-red-500">*</span>
           </label>
           <select
             value={formData.dosham}
             onChange={(e) => onInputChange("dosham", e.target.value)}
             className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all backdrop-blur-sm bg-white/80"
+            required
           >
             <option value="">தேர்ந்தெடுக்க (Select)</option>
             <option value="ஆம்">ஆம் (Yes)</option>
@@ -89,7 +94,7 @@ export const AstrologicalDetailsSection: React.FC<Props> = ({
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((house) => (
             <div key={house}>
               <label className="block text-xs font-medium text-gray-600 mb-1">
-                House {house}
+                House {house} <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -102,6 +107,7 @@ export const AstrologicalDetailsSection: React.FC<Props> = ({
                 }
                 className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-purple-500 focus:border-transparent transition-all backdrop-blur-sm bg-white/80"
                 placeholder={`House ${house}`}
+                required
               />
             </div>
           ))}
@@ -117,7 +123,7 @@ export const AstrologicalDetailsSection: React.FC<Props> = ({
           {[13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24].map((house) => (
             <div key={house}>
               <label className="block text-xs font-medium text-gray-600 mb-1">
-                House {house}
+                House {house} <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -130,6 +136,7 @@ export const AstrologicalDetailsSection: React.FC<Props> = ({
                 }
                 className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-purple-500 focus:border-transparent transition-all backdrop-blur-sm bg-white/80"
                 placeholder={`House ${house}`}
+                required
               />
             </div>
           ))}
