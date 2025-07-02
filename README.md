@@ -55,7 +55,9 @@ This project is built with:
 
 [![Marriage-Biodata-Generator contributors](https://contrib.rocks/image?repo=rpdil23/marriage-biodata-generator)](https://github.com/rpdil23/marriage-biodata-generator/graphs/contributors)
 
-[![Star History Chart](https://api.star-history.com/svg?repos=rpdil23/marriage-biodata-generator&type=Timeline)](https://star-history.com/#rpdil23/marriage-biodata-generator&Date)
+## ⭐ Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=rpdil23/marriage-biodata-generator&type=Date)](https://www.star-history.com/#rpdil23/marriage-biodata-generator&Date)
 
 <div align="right">
 
