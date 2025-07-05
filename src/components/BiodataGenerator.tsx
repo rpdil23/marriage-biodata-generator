@@ -574,14 +574,13 @@ export const BiodataGenerator = () => {
   return (
     <div className="min-h-screen py-8 px-4">
       <div className="max-w-full mx-auto">
-        <button
+        {/* <button
           onClick={() => {
             throw new Error("This is your first error!");
           }}
         >
           Break the world
-        </button>
-        ;
+        </button> */}
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2">
             தமிழ் பயோடேட்டா ஜெனரேட்டர்
