@@ -2,6 +2,7 @@ import { useState } from "react";
 import { PersonalDetailsSection } from "./sections/PersonalDetailsSection";
 import { FamilyDetailsSection } from "./sections/FamilyDetailsSection";
 import { AstrologicalDetailsSection } from "./sections/AstrologicalDetailsSection";
+import { AstrologicalDataDisplay } from "./AstrologicalData";
 
 export interface FormData {
   name: string;
@@ -572,7 +573,7 @@ export const BiodataGenerator = () => {
 
   return (
     <div className="min-h-screen py-8 px-4">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-full mx-auto">
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2">
             தமிழ் பயோடேட்டா ஜெனரேட்டர்
@@ -580,76 +581,75 @@ export const BiodataGenerator = () => {
           <p className="text-gray-600">Tamil Biodata Generator</p>
         </div>
 
-        <div className="backdrop-blur-md bg-white/90 rounded-3xl shadow-2xl border border-white/20 p-8 mb-8">
-          <div className="space-y-8">
-            <PersonalDetailsSection
-              formData={formData}
-              onInputChange={handleInputChange}
-            />
-            <FamilyDetailsSection
-              formData={formData}
-              onInputChange={handleInputChange}
-            />
-            <AstrologicalDetailsSection
-              formData={formData}
-              onInputChange={handleInputChange}
-            />
+        <div className="flex flex-col lg:flex-row gap-6">
+          {/* Left Side - Form */}
+          <div className="flex-1 lg:w-3/4">
+            <div className="backdrop-blur-md bg-white/90 rounded-3xl shadow-2xl border border-white/20 p-8 mb-8">
+              <div className="space-y-8">
+                <PersonalDetailsSection
+                  formData={formData}
+                  onInputChange={handleInputChange}
+                />
+                <FamilyDetailsSection
+                  formData={formData}
+                  onInputChange={handleInputChange}
+                />
+                <AstrologicalDetailsSection
+                  formData={formData}
+                  onInputChange={handleInputChange}
+                />
+              </div>
+
+              <div className="text-center mt-8 space-y-4">
+                <button
+                  onClick={generateFormattedPDF}
+                  className="group relative inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 text-white font-semibold rounded-full hover:from-green-700 hover:via-emerald-700 hover:to-teal-700 transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-emerald-500/25 mr-2"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 rounded-full blur-xl opacity-30 group-hover:opacity-50 transition-opacity"></div>
+                  <svg
+                    className="w-6 h-6 mr-2 relative z-10"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                    />
+                  </svg>
+                  <span className="relative z-10">
+                    தமிழ் பயோடேட்டா PDF ஜெனரேட் செய்
+                  </span>
+                </button>
+
+                <button
+                  onClick={generateTransliteratedPDF}
+                  className="group relative inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-full hover:from-blue-700 hover:to-indigo-700 transform hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-blue-500/25"
+                >
+                  <svg
+                    className="w-6 h-6 mr-2 relative z-10"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                    />
+                  </svg>
+                  Generate English Transliterated PDF
+                </button>
+              </div>
+            </div>
           </div>
 
-          <div className="text-center mt-8 space-y-4">
-            <button
-              onClick={generateFormattedPDF}
-              className="group relative inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 text-white font-semibold rounded-full hover:from-green-700 hover:via-emerald-700 hover:to-teal-700 transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-emerald-500/25 mr-2"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 rounded-full blur-xl opacity-30 group-hover:opacity-50 transition-opacity"></div>
-              <svg
-                className="w-6 h-6 mr-2 relative z-10"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                />
-              </svg>
-              <span className="relative z-10">
-                தமிழ் பயோடேட்டா PDF ஜெனரேட் செய்
-              </span>
-            </button>
-
-            <button
-              onClick={generateTransliteratedPDF}
-              className="group relative inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-full hover:from-blue-700 hover:to-indigo-700 transform hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-blue-500/25"
-            >
-              <svg
-                className="w-6 h-6 mr-2 relative z-10"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                />
-              </svg>
-              Generate English Transliterated PDF
-            </button>
-            {/* 
-            <p className="text-sm text-gray-600 max-w-2xl mx-auto">
-              <strong>Note:</strong> The Tamil PDF uses HTML rendering for
-              proper Tamil font support. The transliterated version uses English
-              letters with Tamil meanings in parentheses.
-              <br />
-              <span className="text-xs mt-2 block">
-                If Tamil characters don't appear correctly in the first PDF, use
-                the transliterated version.
-              </span>
-            </p> */}
+          {/* Right Side - Star Signs & Nakshatrams */}
+          <div className="lg:w-1/4">
+            <AstrologicalDataDisplay />
           </div>
         </div>
       </div>
