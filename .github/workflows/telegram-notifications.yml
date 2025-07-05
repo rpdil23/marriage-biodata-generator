@@ -6,27 +6,36 @@ on:
   pull_request:
     types: [opened, closed, reopened, ready_for_review]
   push:
-    branches: [main, master] 
+    branches: [main, master]
+
+# Limit permissions for security
+permissions:
+  issues: read
+  pull-requests: read
+  contents: read
 
 jobs:
   notify-telegram:
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Send Telegram notification for Issues
         if: github.event_name == 'issues'
+        env:
+          # Set all untrusted input as environment variables
+          ACTION: ${{ github.event.action }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_URL: ${{ github.event.issue.html_url }}
+          REPO_NAME: ${{ github.repository }}
+          AUTHOR: ${{ github.event.issue.user.login }}
+          SENDER: ${{ github.event.sender.login }}
+          LABEL_NAME: ${{ github.event.label.name }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          # Prepare variables
-          ACTION="${{ github.event.action }}"
-          ISSUE_TITLE="${{ github.event.issue.title }}"
-          ISSUE_NUMBER="${{ github.event.issue.number }}"
-          ISSUE_URL="${{ github.event.issue.html_url }}"
-          REPO_NAME="${{ github.repository }}"
-          AUTHOR="${{ github.event.issue.user.login }}"
-
-          # Create message based on action
-          case $ACTION in
+          # Create message based on action using environment variables
+          case "$ACTION" in
             "opened")
               MESSAGE="🐛 <b>New Issue Opened</b>
 
@@ -42,7 +51,7 @@ jobs:
 
           📝 <b>Title:</b> $ISSUE_TITLE
           🔢 <b>Issue #:</b> $ISSUE_NUMBER
-          👤 <b>Closed by:</b> ${{ github.event.sender.login }}
+          👤 <b>Closed by:</b> $SENDER
           📁 <b>Repository:</b> $REPO_NAME
 
           🔗 <a href=\"$ISSUE_URL\">View Issue</a>"
@@ -52,45 +61,48 @@ jobs:
 
           📝 <b>Title:</b> $ISSUE_TITLE
           🔢 <b>Issue #:</b> $ISSUE_NUMBER
-          👤 <b>Reopened by:</b> ${{ github.event.sender.login }}
+          👤 <b>Reopened by:</b> $SENDER
           📁 <b>Repository:</b> $REPO_NAME
 
           🔗 <a href=\"$ISSUE_URL\">View Issue</a>"
               ;;
             "labeled")
-              LABEL_NAME="${{ github.event.label.name }}"
               MESSAGE="🏷️ <b>Issue Labeled</b>
 
           📝 <b>Title:</b> $ISSUE_TITLE
           🔢 <b>Issue #:</b> $ISSUE_NUMBER
           🏷️ <b>Label Added:</b> $LABEL_NAME
-          👤 <b>Labeled by:</b> ${{ github.event.sender.login }}
+          👤 <b>Labeled by:</b> $SENDER
           📁 <b>Repository:</b> $REPO_NAME
 
           🔗 <a href=\"$ISSUE_URL\">View Issue</a>"
               ;;
           esac
 
-          # Send Telegram message
-          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
-            -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
+          # Send Telegram message using environment variables
+          curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
+            -d "chat_id=$TELEGRAM_CHAT_ID" \
             -d "text=$MESSAGE" \
             -d "parse_mode=HTML" \
             -d "disable_web_page_preview=false"
 
       - name: Send Telegram notification for Pull Requests
         if: github.event_name == 'pull_request'
+        env:
+          # Set all untrusted input as environment variables
+          ACTION: ${{ github.event.action }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          REPO_NAME: ${{ github.repository }}
+          AUTHOR: ${{ github.event.pull_request.user.login }}
+          SENDER: ${{ github.event.sender.login }}
+          PR_MERGED: ${{ github.event.pull_request.merged }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          # Prepare variables
-          ACTION="${{ github.event.action }}"
-          PR_TITLE="${{ github.event.pull_request.title }}"
-          PR_NUMBER="${{ github.event.pull_request.number }}"
-          PR_URL="${{ github.event.pull_request.html_url }}"
-          REPO_NAME="${{ github.repository }}"
-          AUTHOR="${{ github.event.pull_request.user.login }}"
-
-          # Create message based on action
-          case $ACTION in
+          # Create message based on action using environment variables
+          case "$ACTION" in
             "opened")
               MESSAGE="🔄 <b>New Pull Request</b>
 
@@ -102,12 +114,12 @@ jobs:
           🔗 <a href=\"$PR_URL\">View Pull Request</a>"
               ;;
             "closed")
-              if [[ "${{ github.event.pull_request.merged }}" == "true" ]]; then
+              if [[ "$PR_MERGED" == "true" ]]; then
                 MESSAGE="🎉 <b>Pull Request Merged</b>
 
           📝 <b>Title:</b> $PR_TITLE
           🔢 <b>PR #:</b> $PR_NUMBER
-          👤 <b>Merged by:</b> ${{ github.event.sender.login }}
+          👤 <b>Merged by:</b> $SENDER
           📁 <b>Repository:</b> $REPO_NAME
 
           🔗 <a href=\"$PR_URL\">View Pull Request</a>"
@@ -116,7 +128,7 @@ jobs:
 
           📝 <b>Title:</b> $PR_TITLE
           🔢 <b>PR #:</b> $PR_NUMBER
-          👤 <b>Closed by:</b> ${{ github.event.sender.login }}
+          👤 <b>Closed by:</b> $SENDER
           📁 <b>Repository:</b> $REPO_NAME
 
           🔗 <a href=\"$PR_URL\">View Pull Request</a>"
@@ -127,7 +139,7 @@ jobs:
 
           📝 <b>Title:</b> $PR_TITLE
           🔢 <b>PR #:</b> $PR_NUMBER
-          👤 <b>Reopened by:</b> ${{ github.event.sender.login }}
+          👤 <b>Reopened by:</b> $SENDER
           📁 <b>Repository:</b> $REPO_NAME
 
           🔗 <a href=\"$PR_URL\">View Pull Request</a>"
@@ -144,38 +156,40 @@ jobs:
               ;;
           esac
 
-          # Send Telegram message
-          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
-            -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
+          # Send Telegram message using environment variables
+          curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
+            -d "chat_id=$TELEGRAM_CHAT_ID" \
             -d "text=$MESSAGE" \
             -d "parse_mode=HTML" \
             -d "disable_web_page_preview=false"
 
       - name: Send Telegram notification for Pushes
         if: github.event_name == 'push'
+        env:
+          # Set all untrusted input as environment variables
+          REPO_NAME: ${{ github.repository }}
+          BRANCH: ${{ github.ref_name }}
+          AUTHOR: ${{ github.event.pusher.name }}
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+          COMMIT_URL: ${{ github.event.head_commit.url }}
+          COMMITTER_NAME: ${{ github.event.head_commit.committer.name }}
+          COMMITS_COUNT: ${{ github.event.commits }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          # Prepare variables
-          REPO_NAME="${{ github.repository }}"
-          BRANCH="${{ github.ref_name }}"
-          AUTHOR="${{ github.event.pusher.name }}"
-          COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
-          COMMIT_URL="${{ github.event.head_commit.url }}"
-          COMMITTER_NAME="${{ github.event.head_commit.committer.name }}"
-
           MESSAGE="📤 <b>New Push to $BRANCH</b>
 
           📁 <b>Repository:</b> $REPO_NAME
           🌿 <b>Branch:</b> $BRANCH
           👤 <b>Author:</b> $AUTHOR
-          📊 <b>Commits:</b> $COMMITS_COUNT
 
           💬 <b>Latest Commit:</b> $COMMIT_MESSAGE
 
           🔗 <a href=\"$COMMIT_URL\">View Commit</a>"
 
-          # Send Telegram message
-          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
-            -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
+          # Send Telegram message using environment variables
+          curl -s -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
+            -d "chat_id=$TELEGRAM_CHAT_ID" \
             -d "text=$MESSAGE" \
             -d "parse_mode=HTML" \
             -d "disable_web_page_preview=false"
