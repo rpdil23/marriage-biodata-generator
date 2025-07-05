@@ -574,13 +574,20 @@ export const BiodataGenerator = () => {
   return (
     <div className="min-h-screen py-8 px-4">
       <div className="max-w-full mx-auto">
+        <button
+          onClick={() => {
+            throw new Error("This is your first error!");
+          }}
+        >
+          Break the world
+        </button>
+        ;
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2">
             தமிழ் பயோடேட்டா ஜெனரேட்டர்
           </h1>
           <p className="text-gray-600">Tamil Biodata Generator</p>
         </div>
-
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Left Side - Form */}
           <div className="flex-1 lg:w-3/4">
