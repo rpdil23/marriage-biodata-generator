@@ -1,10 +1,10 @@
 <a name="readme-top"></a>
 
 <p align="center">
-    <a href="https://rpdil23.github.io/marriage-biodata-generator/"><img src="./public/site.jpg" alt="Marriage Biodata Generator logo"></a>
+    <a href="https://rpdil23.github.io/marriage-biodata-generator/"><img src="./public/image.png" alt="Marriage Biodata Generator logo"></a>
 </p>
 
-# Welcome to your Marriage Biodata Generator
+# 😀 Welcome to your Marriage Biodata Generator
 
 Create beautiful marriage biodata with traditional astrological charts. Generate professional biodata in Tamil and English with instant PDF download.
 
@@ -17,25 +17,31 @@ The only requirement is having Node.js & npm installed - [install with nvm](http
 We a using bun in this project so Follow these steps:
 
 ```sh
-#step 1: Install Bun
+#step 1: Install Bun for windows
 powershell -c "irm bun.sh/install.ps1 | iex"
 ```
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
+# Step 2: Clone the repository using the project's Git URL.
 git clone https://github.com/rpdil23/marriage-biodata-generator.git
+```
 
-# Step 2: Navigate to the project directory.
+```sh
+# Step 3: Navigate to the project directory.
 cd marriage-biodata-generator
+```
 
-# Step 3: Install the necessary dependencies.
+```sh
+# Step 4: Install the necessary dependencies.
 bun i
+```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+```sh
+# Step 5: Start the development server with auto-reloading and an instant preview.
 bun run dev
 ```
 
-## What technologies are used for this project?
+## 💻 What technologies are used for this project?
 
 This project is built with:
 
