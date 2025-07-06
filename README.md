@@ -57,6 +57,10 @@ This project is built with:
 - create issue
 - create PR with branch name format of `<issue number>-<short name>`
 
+## 📊 Activity
+
+![Alt](https://repobeats.axiom.co/api/embed/23a4219cbcea96916b2a59a6f69949ad65f0150c.svg "Repobeats analytics image")
+
 ## 🌟 Contributors
 
 [![Marriage-Biodata-Generator contributors](https://contrib.rocks/image?repo=rpdil23/marriage-biodata-generator)](https://github.com/rpdil23/marriage-biodata-generator/graphs/contributors)
@@ -64,6 +68,12 @@ This project is built with:
 ## ⭐ Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=rpdil23/marriage-biodata-generator&type=Date)](https://www.star-history.com/#rpdil23/marriage-biodata-generator&Date)
+
+## Join our community
+
+<p align="center">
+    👋 join us on <a href="https://t.me/+kY2VcOLzamE4ZDVl" target="_blank">Telegram </a>
+</p>
 
 <div align="right">
 

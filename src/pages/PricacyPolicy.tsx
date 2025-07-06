@@ -76,9 +76,9 @@ export default function TermsAndPrivacy() {
           advised to review this Privacy Policy periodically for any changes.
         </p>
         <p className="mb-2 text-gray-600">
-          Address: <br />
+          {/* Address: <br /> */}
           {/* Phone: <br /> */}
-          Email:
+          {/* Email: */}
         </p>
       </section>
     </div>

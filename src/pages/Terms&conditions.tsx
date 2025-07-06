@@ -144,11 +144,11 @@ export default function TermsAndPrivacy() {
           from these terms will be subject to the exclusive jurisdiction of the
           courts located in Puducherry.
         </p>
-        <h2 className="text-2xl font-semibold mt-8 mb-4">13. Contact Us</h2>
+        {/* <h2 className="text-2xl font-semibold mt-8 mb-4">13. Contact Us</h2>
         <p className="mb-4 text-gray-600">
           If you have any questions or concerns about these terms, please
           contact us at
-        </p>
+        </p> */}
       </section>
     </div>
   );
