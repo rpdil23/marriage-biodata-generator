@@ -3,6 +3,7 @@ import { PersonalDetailsSection } from "./sections/PersonalDetailsSection";
 import { FamilyDetailsSection } from "./sections/FamilyDetailsSection";
 import { AstrologicalDetailsSection } from "./sections/AstrologicalDetailsSection";
 import { AstrologicalDataDisplay } from "./AstrologicalData";
+import { TypewriterEffect } from "../components/ui/typewriter-effect";
 
 export interface FormData {
   name: string;
@@ -571,6 +572,22 @@ export const BiodataGenerator = () => {
     );
   };
 
+  const words = [
+    {
+      text: "Marriage",
+    },
+    {
+      text: "Biodata",
+    },
+    {
+      text: "Generator",
+    },
+    {
+      text: "Generate-PDF",
+      className: "text-blue-500 dark:text-blue-500",
+    },
+  ];
+
   return (
     <div className="min-h-screen py-8 px-4">
       <div className="max-w-full mx-auto">
@@ -585,7 +602,7 @@ export const BiodataGenerator = () => {
           <h1 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2">
             தமிழ் பயோடேட்டா ஜெனரேட்டர்
           </h1>
-          <p className="text-gray-600">Tamil Biodata Generator</p>
+          <TypewriterEffect words={words} />
         </div>
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Left Side - Form */}
