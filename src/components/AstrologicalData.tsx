@@ -3,12 +3,18 @@ import {
   nakshatrams,
   copyToClipboard,
 } from "../data/AstrologicalData";
+import { Image } from "antd";
 
 // Component to display astrological data
 export const AstrologicalDataDisplay = () => {
   return (
     <div className="sticky top-8">
       <div className="backdrop-blur-md bg-white/90 rounded-3xl shadow-2xl border border-white/20 p-6">
+        {/* Star Matching Section */}
+        <div className="mb-6">
+          <Image src="marriage-signs.jpg" alt="Star Matching Signs" />
+        </div>
+
         {/* Nakshatrams Section */}
         <div className="mb-6">
           <h3 className="text-lg font-semibold text-gray-800 mb-3 text-center border-b border-purple-200 pb-2">
@@ -38,7 +44,7 @@ export const AstrologicalDataDisplay = () => {
         </div>
 
         {/* Star Signs Section */}
-        <div>
+        <div className="mb-6">
           <h3 className="text-lg font-semibold text-gray-800 mb-3 text-center border-b border-blue-200 pb-2">
             ராசி (Star Signs)
           </h3>
