@@ -4,7 +4,8 @@ import { FamilyDetailsSection } from "./sections/FamilyDetailsSection";
 import { AstrologicalDetailsSection } from "./sections/AstrologicalDetailsSection";
 import { AstrologicalDataDisplay } from "./AstrologicalData";
 import { TypewriterEffect } from "../components/ui/typewriter-effect";
-
+import { jsPDF } from "jspdf";
+import html2canvas from "html2canvas";
 export interface FormData {
   name: string;
   gender: string;
@@ -194,96 +195,55 @@ export const BiodataGenerator = () => {
   };
 
   const generateFormattedPDF = () => {
-    // Validate required fields first
     const validation = validateRequiredFields(formData);
-
     if (!validation.isValid) {
       showValidationError(validation.missingFields);
       return;
     }
-
-    // Load jsPDF from CDN
-    const script = document.createElement("script");
-    script.src =
-      "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
-    script.onload = () => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { jsPDF } = (window as any).jspdf;
-
-      // Create PDF with Unicode support
-      const doc = new jsPDF({
-        orientation: "portrait",
-        unit: "mm",
-        format: "a4",
-      });
-
-      // Add a Tamil font - using Noto Sans Tamil from Google Fonts
-      // Convert the font to base64 and add it
-      fetch(
-        "https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil&display=swap"
-      ).then(() => {
-        // Since we can't directly embed Google Fonts in jsPDF,
-        // we'll use a workaround with HTML/Canvas approach
-        generatePDFWithHTML2Canvas();
-      });
-    };
-
-    document.head.appendChild(script);
+    // Directly call the PDF generation logic
+    generatePDFWithHTML2Canvas();
   };
 
-  // Shared PDF generation function
   const generatePDF = (content, fontFamily, fontUrl, filename) => {
-    const html2canvasScript = document.createElement("script");
-    html2canvasScript.src =
-      "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
-    html2canvasScript.onload = () => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { jsPDF } = (window as any).jspdf;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const html2canvas = (window as any).html2canvas;
+    const tempDiv = document.createElement("div");
+    tempDiv.style.position = "fixed";
+    tempDiv.style.top = "-9999px";
+    tempDiv.style.width = "250mm";
+    tempDiv.style.minHeight = "297mm";
+    tempDiv.style.padding = "10mm";
+    tempDiv.style.backgroundColor = "white";
+    tempDiv.style.fontFamily = fontFamily;
 
-      const tempDiv = document.createElement("div");
-      tempDiv.style.position = "fixed";
-      tempDiv.style.top = "-9999px";
-      tempDiv.style.width = "250mm";
-      tempDiv.style.minHeight = "297mm";
-      tempDiv.style.padding = "10mm";
-      tempDiv.style.backgroundColor = "white";
-      tempDiv.style.fontFamily = fontFamily;
+    const fontLink = document.createElement("link");
+    fontLink.href = fontUrl;
+    fontLink.rel = "stylesheet";
+    document.head.appendChild(fontLink);
 
-      const fontLink = document.createElement("link");
-      fontLink.href = fontUrl;
-      fontLink.rel = "stylesheet";
-      document.head.appendChild(fontLink);
+    setTimeout(() => {
+      tempDiv.innerHTML = content;
+      document.body.appendChild(tempDiv);
 
-      setTimeout(() => {
-        tempDiv.innerHTML = content;
-        document.body.appendChild(tempDiv);
+      html2canvas(tempDiv, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+      }).then((canvas) => {
+        const imgData = canvas.toDataURL("image/png");
+        const doc = new jsPDF("p", "mm", "a4");
 
-        html2canvas(tempDiv, {
-          scale: 2,
-          useCORS: true,
-          logging: false,
-        }).then((canvas) => {
-          const imgData = canvas.toDataURL("image/png");
-          const doc = new jsPDF("p", "mm", "a4");
+        const imgWidth = 210;
+        const pageHeight = 297;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-          const imgWidth = 210;
-          const pageHeight = 297;
-          const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        const scale = pageHeight / imgHeight;
+        const scaledImgHeight = imgHeight * Math.min(scale, 1);
+        const scaledImgWidth = imgWidth * Math.min(scale, 1);
 
-          const scale = pageHeight / imgHeight;
-          const scaledImgHeight = imgHeight * Math.min(scale, 1);
-          const scaledImgWidth = imgWidth * Math.min(scale, 1);
-
-          doc.addImage(imgData, "PNG", 0, 0, scaledImgWidth, scaledImgHeight);
-          doc.save(filename);
-          document.body.removeChild(tempDiv);
-        });
-      }, 1000);
-    };
-
-    document.head.appendChild(html2canvasScript);
+        doc.addImage(imgData, "PNG", 0, 0, scaledImgWidth, scaledImgHeight);
+        doc.save(filename);
+        document.body.removeChild(tempDiv);
+      });
+    }, 1000);
   };
 
   // Shared styles
