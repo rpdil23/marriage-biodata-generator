@@ -16,7 +16,7 @@ const translationsMap = { en, ta, hi };
 
 const LanguageContext = createContext<LanguageContextProps>({
   language: 'en',
-  setLanguage: () => {},
+  setLanguage: () => { },
   t: (key) => key.toString(),
 });
 
@@ -26,7 +26,7 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   // Let's stick to 'en' as default or 'ta' if that was the primary audience. 
   // Looking at the code, it had mixed labels. Let's start with 'ta' as it seems to be the primary target (Marriage Biodata Generator usually for local usage).
   // User's snippet used 'en'. I will use 'en' to be safe, but the user requested "Add Hindi support to Tamil & English marriage biodata generator".
-  
+
   const t = (key: keyof Translations) => {
     return translationsMap[language][key] || key.toString();
   };
