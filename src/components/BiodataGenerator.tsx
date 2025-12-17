@@ -6,6 +6,8 @@ import { AstrologicalDataDisplay } from "./AstrologicalData";
 import { TypewriterEffect } from "../components/ui/typewriter-effect";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
+import { useLanguage } from "../context/LanguageContext";
+
 export interface FormData {
   name: string;
   gender: string;
@@ -61,6 +63,7 @@ export interface FormData {
 }
 
 export const BiodataGenerator = () => {
+  const { t, language } = useLanguage();
   const [formData, setFormData] = useState<FormData>({
     name: "",
     gender: "",
@@ -123,53 +126,47 @@ export const BiodataGenerator = () => {
   };
 
   // Validation function to check all required fields
-  const validateRequiredFields = (formData) => {
+  const validateRequiredFields = (formData: FormData) => {
     const requiredFields = [
       // Personal Details
-      { field: "name", label: "பெயர் (Name)" },
-      { field: "gender", label: "பாலினம் (Gender)" },
-      { field: "dateOfBirth", label: "பிறந்த தேதி (Date of Birth)" },
-      { field: "timeOfBirth", label: "பிறந்த நேரம் (Time of Birth)" },
-      { field: "placeOfBirth", label: "பிறந்த ஊர் (Place of Birth)" },
-      { field: "residence", label: "இருப்பிடம் (Residence)" },
-      { field: "education", label: "படிப்பு (Education)" },
-      { field: "jobDetails", label: "பணி விவரங்கள் (Job Details)" },
-      { field: "income", label: "வருமானம் (Income)" },
-      { field: "caste", label: "ஜாதி (Caste)" },
-      { field: "heightCm", label: "உயரம் (Height)" },
-      { field: "weight", label: "எடை (Weight)" },
-      { field: "color", label: "நிறம் (Color)" },
+      { field: "name", label: t("name") },
+      { field: "gender", label: t("gender") },
+      { field: "dateOfBirth", label: t("dateOfBirth") },
+      { field: "timeOfBirth", label: t("timeOfBirth") },
+      { field: "placeOfBirth", label: t("placeOfBirth") },
+      { field: "residence", label: t("residence") },
+      { field: "education", label: t("education") },
+      { field: "jobDetails", label: t("jobDetails") },
+      { field: "income", label: t("income") },
+      { field: "caste", label: t("caste") },
+      { field: "heightCm", label: t("height") },
+      { field: "weight", label: t("weight") },
+      { field: "color", label: t("color") },
 
       // Family Details
-      { field: "fatherName", label: "தந்தை பெயர் (Father's Name)" },
-      { field: "fatherJob", label: "தந்தை பணி விவரம் (Father's Job Details)" },
-      { field: "motherName", label: "தாய் பெயர் (Mother's Name)" },
-      { field: "motherJob", label: "தாய் பணி விவரம் (Mother's Job Details)" },
-      { field: "siblings", label: "உடன் பிறந்தவர்கள் (Siblings)" },
-      { field: "phoneNumber", label: "தொலைபேசி எண் (Phone Number)" },
-      { field: "whatsappNumber", label: "வாட்ஸ்ஆப் எண் (WhatsApp Number)" },
-      { field: "address", label: "முகவரி (Address)" },
-      { field: "assetDetails", label: "சொத்து விவரம் (Asset Details)" },
+      { field: "fatherName", label: t("fatherName") },
+      { field: "fatherJob", label: t("fatherJob") },
+      { field: "motherName", label: t("motherName") },
+      { field: "motherJob", label: t("motherJob") },
+      { field: "siblings", label: t("siblings") },
+      { field: "phoneNumber", label: t("phoneNumber") },
+      { field: "whatsappNumber", label: t("whatsappNumber") },
+      { field: "address", label: t("address") },
+      { field: "assetDetails", label: t("assetDetails") },
 
       // Astrological Details
-      { field: "lagnam", label: "லக்னம் (Lagnam)" },
+      { field: "lagnam", label: t("lagnam") },
       {
         field: "rasiNakshatram",
-        label: "ராசி - நட்சத்திரம் (Rasi - Nakshatram)",
+        label: t("rasiNakshatram"),
       },
-      { field: "dosham", label: "ராகு கேது தோசம் (Rahu Ketu Dosham)" },
-
-      // House fields (1-24)
-      // ...Array.from({ length: 24 }, (_, i) => ({
-      //   field: `house${i + 1}`,
-      //   label: `House ${i + 1}`,
-      // })),
+      { field: "dosham", label: t("dosham") },
     ];
 
-    const missingFields = [];
+    const missingFields: string[] = [];
 
     for (const { field, label } of requiredFields) {
-      const value = formData[field];
+      const value = formData[field as keyof FormData];
       if (!value || value.toString().trim() === "") {
         missingFields.push(label);
       }
@@ -182,29 +179,18 @@ export const BiodataGenerator = () => {
   };
 
   // Show validation error message
-  const showValidationError = (missingFields) => {
-    const errorMessage = `கீழ்க்கண்ட அவசியமான புலங்களை பூர்த்தி செய்யவும் (Please fill the following required fields):\n\n${missingFields
+  const showValidationError = (missingFields: string[]) => {
+    const errorMessage = `${t("validationError")}:\n\n${missingFields
       .slice(0, 10)
-      .join("\n")}${
-      missingFields.length > 10
-        ? `\n\n... and ${missingFields.length - 10} more fields`
+      .join("\n")}${missingFields.length > 10
+        ? `\n\n... ${t("andMore")} ${missingFields.length - 10}`
         : ""
-    }`;
+      }`;
 
     alert(errorMessage);
   };
 
-  const generateFormattedPDF = () => {
-    const validation = validateRequiredFields(formData);
-    if (!validation.isValid) {
-      showValidationError(validation.missingFields);
-      return;
-    }
-    // Directly call the PDF generation logic
-    generatePDFWithHTML2Canvas();
-  };
-
-  const generatePDF = (content, fontFamily, fontUrl, filename) => {
+  const generatePDFInternal = (content: string, fontFamily: string, fontUrl: string, filename: string) => {
     const tempDiv = document.createElement("div");
     tempDiv.style.position = "fixed";
     tempDiv.style.top = "-9999px";
@@ -242,12 +228,13 @@ export const BiodataGenerator = () => {
         doc.addImage(imgData, "PNG", 0, 0, scaledImgWidth, scaledImgHeight);
         doc.save(filename);
         document.body.removeChild(tempDiv);
+        document.head.removeChild(fontLink);
       });
     }, 1000);
   };
 
   // Shared styles
-  const getSharedStyles = (fontFamily) => `
+  const getSharedStyles = (fontFamily: string) => `
   <style>
     * { font-family: ${fontFamily} !important; }
     .main-container { 
@@ -263,7 +250,7 @@ export const BiodataGenerator = () => {
       position: relative;
     }
     .top-border-text {
-     position: absolute;
+      position: absolute;
       top: -35px;
       left: 50%;
       transform: translateX(-50%);
@@ -329,48 +316,44 @@ export const BiodataGenerator = () => {
 `;
 
   // Generate charts HTML
-  const generateCharts = (formData, centerText1, centerText2) => `
+  const generateCharts = (formData: FormData, centerText1: string, centerText2: string) => `
   <div class="charts-container">
     <div class="rasi-container">
       <div class="rasi-chart">
         <div class="center">${centerText1}</div>
         ${Array.from(
-          { length: 12 },
-          (_, i) =>
-            `<div class="cell house-${i + 1}">${
-              formData[`house${i + 1}`] || ""
-            }</div>`
-        ).join("")}
+    { length: 12 },
+    (_, i) =>
+      `<div class="cell house-${i + 1}">${formData[`house${i + 1}` as keyof FormData] || ""
+      }</div>`
+  ).join("")}
       </div>
     </div>
     <div class="rasi-container">
       <div class="rasi-chart">
         <div class="center">${centerText2}</div>
         ${Array.from(
-          { length: 12 },
-          (_, i) =>
-            `<div class="cell house-${i + 1}">${
-              formData[`house${i + 13}`] || ""
-            }</div>`
-        ).join("")}
+    { length: 12 },
+    (_, i) =>
+      `<div class="cell house-${i + 1}">${formData[`house${i + 13}` as keyof FormData] || ""
+      }</div>`
+  ).join("")}
       </div>
     </div>
   </div>
 `;
 
   // Generate field list
-  const generateFields = (fields, formData) =>
+  const generateFieldsHTML = (fields: any[], formData: FormData) =>
     fields
       .map(
         (field) =>
-          `<div class="detail"><span class="label">${
-            field.label
+          `<div class="detail"><span class="label">${field.label
           }</span> : ${field.getValue(formData)}</div>`
       )
       .join("");
 
-  // Tamil PDF generation
-  const generatePDFWithHTML2Canvas = () => {
+  const handleGeneratePDF = () => {
     // Validate required fields first
     const validation = validateRequiredFields(formData);
 
@@ -379,188 +362,169 @@ export const BiodataGenerator = () => {
       return;
     }
 
-    const tamilFields = [
-      { label: "1. பெயர்", getValue: (data) => data.name },
-      { label: "2. பாலினம்", getValue: (data) => data.gender },
-      { label: "3. பிறந்த தேதி", getValue: (data) => data.dateOfBirth },
-      { label: "4. பிறந்த நேரம்", getValue: (data) => data.timeOfBirth },
-      { label: "5. பிறந்த ஊர்", getValue: (data) => data.placeOfBirth },
-      { label: "6. கல்வி", getValue: (data) => data.education },
-      { label: "7. வேலை", getValue: (data) => data.jobDetails },
-      {
-        label: "8. ராசி - நட்சத்திரம்",
-        getValue: (data) => data.rasiNakshatram,
-      },
-      { label: "9. லக்னம்", getValue: (data) => data.lagnam },
-      { label: "10. ராகு கேது தோசம்", getValue: (data) => data.dosham },
-      { label: "11. இருப்பிடம்", getValue: (data) => data.residence },
-      { label: "12. வருமானம்", getValue: (data) => data.income },
-      { label: "13. இனம்", getValue: (data) => data.caste },
-      {
-        label: "14. உயரம்",
-        getValue: (data) =>
-          `${data.heightCm} CM / ${(
-            parseFloat(data.heightCm) * 0.0328084
-          ).toFixed(2)} ft`,
-      },
-      { label: "15. எடை", getValue: (data) => data.weight },
-      { label: "16. நிறம்", getValue: (data) => data.color },
-    ];
+    // Define Configuration based on Language
+    let fontName = "'Noto Sans Tamil', sans-serif";
+    let fontUrl = "https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@400;700&display=swap";
+    let fields = [];
+    let familyFields = [];
+    let chartCenterRasi = t("rasiChakram");
+    let chartCenterSubam = t("subam");
+    let topSymbol = "உ";
 
-    const familyFields = [
-      { label: "17. தந்தை", getValue: (data) => data.fatherName },
-      { label: "18. தந்தை", getValue: (data) => data.fatherJob },
-      { label: "19. தாய்", getValue: (data) => data.motherName },
-      { label: "20. தாய்", getValue: (data) => data.motherJob },
-      { label: "21. உடன் பிறந்தவர்", getValue: (data) => data.siblings },
-      { label: "22. முகவரி", getValue: (data) => data.address },
-      { label: "23. தொலைபேசி எண்கள்", getValue: (data) => data.phoneNumber },
-      { label: "24. சொத்து விவரம்", getValue: (data) => data.assetDetails },
-    ];
+    // Common Get Value Logic
+    const getValue = (key: keyof FormData) => (data: FormData) => data[key];
+    const getHeightValue = (data: FormData) => `${data.heightCm} CM / ${(parseFloat(data.heightCm) * 0.0328084).toFixed(2)} ft`;
 
-    const content = `
-    ${getSharedStyles("'Noto Sans Tamil', sans-serif")}
-    <div class="main-container">
-      <div class="top-border-text">உ</div>
-      <div class="header">
-        <img src="logo.png" alt="Logo" class="header-logo" onerror="this.style.display='none'">
-        <div class="header-title">Marriage BioData Generator</div>
-        <div class="header-website">https://rpdil23.github.io/marriage-biodata-generator</div>
-      </div>
-      
-      <div class="title">ஜாதகக் குறிப்பு</div>
-      <div class="section">${generateFields(tamilFields, formData)}</div>
-      
-      <div class="title">குடும்ப விவரம்</div>
-      <div class="section">${generateFields(familyFields, formData)}</div>
-      
-      <div class="title">ராசி சக்கரம்</div>
-      <div class="section">
-        ${generateCharts(formData, "ராசி", "சுபம்")}
-        <div class="other-details">${formData.otherDetails}</div>
-      </div>
-    </div>
-  `;
+    if (language === 'en') {
+      fontName = "'Noto Sans', sans-serif";
+      fontUrl = "https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap";
+      topSymbol = "Om"; // Or keep blank
 
-    generatePDF(
-      content,
-      "'Noto Sans Tamil', sans-serif",
-      "https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@400;700&display=swap",
-      `${formData.name || "biodata"}_tamil.pdf`
-    );
-  };
+      fields = [
+        { label: `1. ${t('name')}`, getValue: getValue('name') },
+        { label: `2. ${t('gender')}`, getValue: getValue('gender') },
+        { label: `3. ${t('dateOfBirth')}`, getValue: getValue('dateOfBirth') },
+        { label: `4. ${t('timeOfBirth')}`, getValue: getValue('timeOfBirth') },
+        { label: `5. ${t('placeOfBirth')}`, getValue: getValue('placeOfBirth') },
+        { label: `6. ${t('education')}`, getValue: getValue('education') },
+        { label: `7. ${t('jobDetails')}`, getValue: getValue('jobDetails') },
+        { label: `8. ${t('rasiNakshatram')}`, getValue: getValue('rasiNakshatram') },
+        // English version had "Moon Sign" (house1) different from Tamil logic? keeping logic consistent now.
+        // Existing logic was specific. Let's use standard keys.
+        { label: `9. ${t('lagnam')}`, getValue: getValue('lagnam') },
+        { label: `10. ${t('dosham')}`, getValue: getValue('dosham') },
+        { label: `11. ${t('residence')}`, getValue: getValue('residence') },
+        { label: `12. ${t('income')}`, getValue: getValue('income') },
+        { label: `13. ${t('caste')}`, getValue: getValue('caste') },
+        { label: `14. ${t('height')}`, getValue: getHeightValue },
+        { label: `15. ${t('weight')}`, getValue: getValue('weight') },
+        { label: `16. ${t('color')}`, getValue: getValue('color') },
+      ];
+      familyFields = [
+        { label: `17. ${t('fatherName')}`, getValue: getValue('fatherName') },
+        { label: `18. ${t('fatherJob')}`, getValue: getValue('fatherJob') },
+        { label: `19. ${t('motherName')}`, getValue: getValue('motherName') },
+        { label: `20. ${t('motherJob')}`, getValue: getValue('motherJob') },
+        { label: `21. ${t('siblings')}`, getValue: getValue('siblings') },
+        { label: `22. ${t('address')}`, getValue: getValue('address') },
+        { label: `23. ${t('phoneNumber')}`, getValue: getValue('phoneNumber') },
+        { label: `24. ${t('assetDetails')}`, getValue: getValue('assetDetails') },
+      ];
+    } else if (language === 'hi') {
+      fontName = "'Noto Sans Devanagari', sans-serif";
+      fontUrl = "https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;700&display=swap";
+      topSymbol = "श्री गणेशाय नमः";
 
-  // English PDF generation
-  const generateTransliteratedPDF = () => {
-    // Validate required fields first
-    const validation = validateRequiredFields(formData);
+      fields = [
+        { label: `1. ${t('name')}`, getValue: getValue('name') },
+        { label: `2. ${t('gender')}`, getValue: getValue('gender') },
+        { label: `3. ${t('dateOfBirth')}`, getValue: getValue('dateOfBirth') },
+        { label: `4. ${t('timeOfBirth')}`, getValue: getValue('timeOfBirth') },
+        { label: `5. ${t('placeOfBirth')}`, getValue: getValue('placeOfBirth') },
+        { label: `6. ${t('education')}`, getValue: getValue('education') },
+        { label: `7. ${t('jobDetails')}`, getValue: getValue('jobDetails') },
+        { label: `8. ${t('rasiNakshatram')}`, getValue: getValue('rasiNakshatram') },
+        { label: `9. ${t('lagnam')}`, getValue: getValue('lagnam') },
+        { label: `10. ${t('dosham')}`, getValue: getValue('dosham') },
+        { label: `11. ${t('residence')}`, getValue: getValue('residence') },
+        { label: `12. ${t('income')}`, getValue: getValue('income') },
+        { label: `13. ${t('caste')}`, getValue: getValue('caste') },
+        { label: `14. ${t('height')}`, getValue: getHeightValue },
+        { label: `15. ${t('weight')}`, getValue: getValue('weight') },
+        { label: `16. ${t('color')}`, getValue: getValue('color') },
+      ];
+      familyFields = [
+        { label: `17. ${t('fatherName')}`, getValue: getValue('fatherName') },
+        { label: `18. ${t('fatherJob')}`, getValue: getValue('fatherJob') },
+        { label: `19. ${t('motherName')}`, getValue: getValue('motherName') },
+        { label: `20. ${t('motherJob')}`, getValue: getValue('motherJob') },
+        { label: `21. ${t('siblings')}`, getValue: getValue('siblings') },
+        { label: `22. ${t('address')}`, getValue: getValue('address') },
+        { label: `23. ${t('phoneNumber')}`, getValue: getValue('phoneNumber') },
+        { label: `24. ${t('assetDetails')}`, getValue: getValue('assetDetails') },
+      ];
+    } else {
+      // Tamil
+      fontName = "'Noto Sans Tamil', sans-serif";
+      fontUrl = "https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@400;700&display=swap";
+      topSymbol = "உ";
 
-    if (!validation.isValid) {
-      showValidationError(validation.missingFields);
-      return;
+      fields = [
+        { label: `1. ${t('name')}`, getValue: getValue('name') },
+        { label: `2. ${t('gender')}`, getValue: getValue('gender') },
+        { label: `3. ${t('dateOfBirth')}`, getValue: getValue('dateOfBirth') },
+        { label: `4. ${t('timeOfBirth')}`, getValue: getValue('timeOfBirth') },
+        { label: `5. ${t('placeOfBirth')}`, getValue: getValue('placeOfBirth') },
+        { label: `6. ${t('education')}`, getValue: getValue('education') },
+        { label: `7. ${t('jobDetails')}`, getValue: getValue('jobDetails') },
+        { label: `8. ${t('rasiNakshatram')}`, getValue: getValue('rasiNakshatram') },
+        { label: `9. ${t('lagnam')}`, getValue: getValue('lagnam') },
+        { label: `10. ${t('dosham')}`, getValue: getValue('dosham') },
+        { label: `11. ${t('residence')}`, getValue: getValue('residence') },
+        { label: `12. ${t('income')}`, getValue: getValue('income') },
+        { label: `13. ${t('caste')}`, getValue: getValue('caste') },
+        { label: `14. ${t('height')}`, getValue: getHeightValue },
+        { label: `15. ${t('weight')}`, getValue: getValue('weight') },
+        { label: `16. ${t('color')}`, getValue: getValue('color') },
+      ];
+      familyFields = [
+        { label: `17. ${t('fatherName')}`, getValue: getValue('fatherName') },
+        { label: `18. ${t('fatherJob')}`, getValue: getValue('fatherJob') },
+        { label: `19. ${t('motherName')}`, getValue: getValue('motherName') },
+        { label: `20. ${t('motherJob')}`, getValue: getValue('motherJob') },
+        { label: `21. ${t('siblings')}`, getValue: getValue('siblings') },
+        { label: `22. ${t('address')}`, getValue: getValue('address') },
+        { label: `23. ${t('phoneNumber')}`, getValue: getValue('phoneNumber') },
+        { label: `24. ${t('assetDetails')}`, getValue: getValue('assetDetails') },
+      ];
     }
 
-    const englishFields = [
-      { label: "1. Name", getValue: (data) => data.name },
-      { label: "2. Gender", getValue: (data) => data.gender },
-      { label: "3. Date of Birth", getValue: (data) => data.dateOfBirth },
-      { label: "4. Time of Birth", getValue: (data) => data.timeOfBirth },
-      { label: "5. Place of Birth", getValue: (data) => data.placeOfBirth },
-      { label: "6. Education", getValue: (data) => data.education },
-      { label: "7. Job", getValue: (data) => data.jobDetails },
-      { label: "8. Star", getValue: (data) => data.rasiNakshatram },
-      { label: "9. Moon Sign", getValue: (data) => data.house1 },
-      { label: "10. Ascendant", getValue: (data) => data.lagnam },
-      { label: "11. Dosham", getValue: (data) => data.dosham },
-      { label: "12. Residence", getValue: (data) => data.residence },
-      { label: "13. Income", getValue: (data) => data.income },
-      { label: "14. Caste", getValue: (data) => data.caste },
-      {
-        label: "15. Height",
-        getValue: (data) =>
-          `${data.heightCm} CM / ${(
-            parseFloat(data.heightCm) * 0.0328084
-          ).toFixed(2)} ft`,
-      },
-      { label: "16. Weight", getValue: (data) => data.weight },
-      { label: "17. Color", getValue: (data) => data.color },
-    ];
-
-    const englishFamilyFields = [
-      { label: "18. Father", getValue: (data) => data.fatherName },
-      { label: "19. Father Job", getValue: (data) => data.fatherJob },
-      { label: "20. Mother", getValue: (data) => data.motherName },
-      { label: "21. Mother Job", getValue: (data) => data.motherJob },
-      { label: "22. Siblings", getValue: (data) => data.siblings },
-      { label: "23. Address", getValue: (data) => data.address },
-      { label: "24. Phone Numbers", getValue: (data) => data.phoneNumber },
-      { label: "25. Asset Details", getValue: (data) => data.assetDetails },
-    ];
 
     const content = `
-    ${getSharedStyles("'Noto Sans', sans-serif")}
+    ${getSharedStyles(fontName)}
     <div class="main-container">
-      <div class="top-border-text">உ</div>
+      <div class="top-border-text">${topSymbol}</div>
       <div class="header">
         <img src="logo.png" alt="Logo" class="header-logo" onerror="this.style.display='none'">
-        <div class="header-title">Marriage BioData Generator</div>
+        <div class="header-title">${t('appTitle')}</div>
         <div class="header-website">https://rpdil23.github.io/marriage-biodata-generator</div>
       </div>
       
-      <div class="title">Jaathaga Kurippu (Horoscope Details)</div>
-      <div class="section">${generateFields(englishFields, formData)}</div>
+      <div class="title">${t('jaathagaKurippu')}</div>
+      <div class="section">${generateFieldsHTML(fields, formData)}</div>
       
-      <div class="title">Kudumba Vivaram (Family Details)</div>
-      <div class="section">${generateFields(
-        englishFamilyFields,
-        formData
-      )}</div>
+      <div class="title">${t('kudumbaVivaram')}</div>
+      <div class="section">${generateFieldsHTML(familyFields, formData)}</div>
       
-      <div class="title">Rasi Chakram (Zodiac Chart)</div>
+      <div class="title">${t('rasiChakram')}</div>
       <div class="section">
-        ${generateCharts(formData, "Rasi", "Subam")}
+        ${generateCharts(formData, chartCenterRasi, chartCenterSubam)}
         <div class="other-details">${formData.otherDetails}</div>
       </div>
     </div>
   `;
 
-    generatePDF(
+    generatePDFInternal(
       content,
-      "'Noto Sans', sans-serif",
-      "https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap",
-      `${formData.name || "biodata"}_transliterated.pdf`
+      fontName,
+      fontUrl,
+      `${formData.name || "biodata"}_${language}.pdf`
     );
   };
 
   const words = [
-    {
-      text: "Marriage",
-    },
-    {
-      text: "Biodata",
-    },
-    {
-      text: "Generator",
-    },
-    {
-      text: "Generate-PDF",
-      className: "text-blue-500 dark:text-blue-500",
-    },
+    { text: "Marriage" },
+    { text: "Biodata" },
+    { text: "Generator" },
+    { text: t("generatePDF"), className: "text-blue-500 dark:text-blue-500" },
   ];
 
   return (
     <div className="min-h-screen py-8 px-4">
       <div className="max-w-full mx-auto">
-        {/* <button
-          onClick={() => {
-            throw new Error("This is your first error!");
-          }}
-        >
-          Break the world
-        </button> */}
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2">
-            தமிழ் பயோடேட்டா ஜெனரேட்டர்
+            {t("appTitle")}
           </h1>
           <TypewriterEffect words={words} />
         </div>
@@ -585,7 +549,7 @@ export const BiodataGenerator = () => {
 
               <div className="text-center mt-8 space-y-4">
                 <button
-                  onClick={generateFormattedPDF}
+                  onClick={handleGeneratePDF}
                   className="group relative inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 text-white font-semibold rounded-full hover:from-green-700 hover:via-emerald-700 hover:to-teal-700 transform hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-emerald-500/25 mr-2"
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 rounded-full blur-xl opacity-30 group-hover:opacity-50 transition-opacity"></div>
@@ -603,28 +567,8 @@ export const BiodataGenerator = () => {
                     />
                   </svg>
                   <span className="relative z-10">
-                    தமிழ் பயோடேட்டா PDF ஜெனரேட் செய்
+                    {t("generatePDF")} ({t(language === 'en' ? 'generateEnglishPDF' : language === 'ta' ? 'generateTamilPDF' : 'generateHindiPDF')})
                   </span>
-                </button>
-
-                <button
-                  onClick={generateTransliteratedPDF}
-                  className="group relative inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-full hover:from-blue-700 hover:to-indigo-700 transform hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-blue-500/25"
-                >
-                  <svg
-                    className="w-6 h-6 mr-2 relative z-10"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                    />
-                  </svg>
-                  Generate English Transliterated PDF
                 </button>
               </div>
             </div>
