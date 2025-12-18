@@ -86,6 +86,8 @@ This project is built with:
 Copyright © 2025 [Marriage-Biodata-Generator][profile-link]. <br />
 This project is [Dual Licence](./LICENCE) licensed.
 
+update by 
+
 <!-- LINK GROUP -->
 
 [back-to-top]: https://img.shields.io/badge/-BACK_TO_TOP-222628?style=flat-square
