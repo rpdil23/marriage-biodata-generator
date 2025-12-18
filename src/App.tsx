@@ -7,6 +7,7 @@ import Header from "@/layout/Header";
 import { Footer } from "@/layout/Footer";
 import { useEffect } from "react";
 import ReactGA from "react-ga4";
+import { LanguageProvider } from "./context/LanguageContext";
 
 // Initialize the QueryClient
 const queryClient = new QueryClient();
@@ -20,15 +21,17 @@ const App: React.FC = () => {
   }, []); // Empty dependency array to run only once
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <Header />
-        <Router />
-        <Footer />
-      </TooltipProvider>
-    </QueryClientProvider>
+    <LanguageProvider>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <Header />
+          <Router />
+          <Footer />
+        </TooltipProvider>
+      </QueryClientProvider>
+    </LanguageProvider>
   );
 };
 

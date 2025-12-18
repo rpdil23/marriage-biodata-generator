@@ -1,5 +1,6 @@
 import React from "react";
 import { FormData } from "../BiodataGenerator";
+import { useLanguage } from "../../context/LanguageContext";
 
 interface Props {
   formData: FormData;
@@ -10,15 +11,17 @@ export const FamilyDetailsSection: React.FC<Props> = ({
   formData,
   onInputChange,
 }) => {
+  const { t } = useLanguage();
+
   return (
     <div className="bg-gradient-to-br from-green-50/80 to-emerald-50/80 backdrop-blur-sm rounded-2xl p-6 border border-green-100/50">
       <h2 className="text-2xl font-semibold text-gray-800 mb-6 border-b-2 border-green-200 pb-2">
-        குடும்ப விவரங்கள் (Family Details)
+        {t("familyDetails")}
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            தந்தை பெயர் (Father's Name) <span className="text-red-500">*</span>
+            {t("fatherName")} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -31,8 +34,7 @@ export const FamilyDetailsSection: React.FC<Props> = ({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            தந்தை பணி விவரம் (Father's Job Details){" "}
-            <span className="text-red-500">*</span>
+            {t("fatherJob")} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -45,7 +47,7 @@ export const FamilyDetailsSection: React.FC<Props> = ({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            தாய் பெயர் (Mother's Name) <span className="text-red-500">*</span>
+            {t("motherName")} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -58,8 +60,7 @@ export const FamilyDetailsSection: React.FC<Props> = ({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            தாய் பணி விவரம் (Mother's Job Details){" "}
-            <span className="text-red-500">*</span>
+            {t("motherJob")} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -72,7 +73,7 @@ export const FamilyDetailsSection: React.FC<Props> = ({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            உடன் பிறந்தவர்கள் (Siblings) <span className="text-red-500">*</span>
+            {t("siblings")} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -85,7 +86,7 @@ export const FamilyDetailsSection: React.FC<Props> = ({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            தொலைபேசி எண் (Phone Number) <span className="text-red-500">*</span>
+            {t("phoneNumber")} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -98,8 +99,7 @@ export const FamilyDetailsSection: React.FC<Props> = ({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            வாட்ஸ்ஆப் எண் (WhatsApp Number){" "}
-            <span className="text-red-500">*</span>
+            {t("whatsappNumber")} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -112,7 +112,7 @@ export const FamilyDetailsSection: React.FC<Props> = ({
 
         <div className="md:col-span-2">
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            முகவரி (Address) <span className="text-red-500">*</span>
+            {t("address")} <span className="text-red-500">*</span>
           </label>
           <textarea
             value={formData.address}
@@ -125,8 +125,7 @@ export const FamilyDetailsSection: React.FC<Props> = ({
 
         <div className="md:col-span-1">
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            சொத்து விவரம் (Asset Details){" "}
-            <span className="text-red-500">*</span>
+            {t("assetDetails")} <span className="text-red-500">*</span>
           </label>
           <textarea
             value={formData.assetDetails}

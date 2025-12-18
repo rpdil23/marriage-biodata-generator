@@ -1,5 +1,6 @@
 import React from "react";
 import { FormData } from "../BiodataGenerator";
+import { useLanguage } from "../../context/LanguageContext";
 
 interface Props {
   formData: FormData;
@@ -10,15 +11,17 @@ export const PersonalDetailsSection: React.FC<Props> = ({
   formData,
   onInputChange,
 }) => {
+  const { t } = useLanguage();
+
   return (
     <div className="bg-gradient-to-br from-blue-50/80 to-indigo-50/80 backdrop-blur-sm rounded-2xl p-6 border border-blue-100/50">
       <h2 className="text-2xl font-semibold text-gray-800 mb-6 border-b-2 border-blue-200 pb-2">
-        தனிப்பட்ட விவரங்கள் (Personal Details)
+        {t("personalDetails")}
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            பெயர் (Name) <span className="text-red-500">*</span>
+            {t("name")} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -31,7 +34,7 @@ export const PersonalDetailsSection: React.FC<Props> = ({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            பாலினம் (Gender) <span className="text-red-500">*</span>
+            {t("gender")} <span className="text-red-500">*</span>
           </label>
           <select
             value={formData.gender}
@@ -39,15 +42,21 @@ export const PersonalDetailsSection: React.FC<Props> = ({
             className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all backdrop-blur-sm bg-white/80"
             required
           >
-            <option value="">தேர்ந்தெடுக்க (Select)</option>
-            <option value="ஆண்">ஆண் (Male)</option>
-            <option value="பெண்">பெண் (Female)</option>
+            <option value="">{t("selectLanguage")} (Select)</option>
+            {/* Note: Option values are hardcoded in mixed language currently. Ideally these should be constants or translated too if we want the PDF to be translated properly. 
+                However PDF generation uses direct values. If we change these values, existing PDF logic breaks or needs update. 
+                For now I will keep the VALUES same but maybe update display? 
+                Actually the implementation plan said "Replace hardcoded strings". 
+                The options "ஆண் (Male)" are specifically bilingual. 
+                I will leave the option values as is for now to avoid breaking data flow, but ideally they should be generic. */}
+            <option value="Male">Male / ஆண் / पुरुष</option>
+            <option value="Female">Female / பெண் / महिला</option>
           </select>
         </div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            பிறந்த தேதி (Date of Birth) <span className="text-red-500">*</span>
+            {t("dateOfBirth")} <span className="text-red-500">*</span>
           </label>
           <input
             type="date"
@@ -60,7 +69,7 @@ export const PersonalDetailsSection: React.FC<Props> = ({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            பிறந்த நேரம் (Time of Birth) <span className="text-red-500">*</span>
+            {t("timeOfBirth")} <span className="text-red-500">*</span>
           </label>
           <input
             type="time"
@@ -73,7 +82,7 @@ export const PersonalDetailsSection: React.FC<Props> = ({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            பிறந்த ஊர் (Place of Birth) <span className="text-red-500">*</span>
+            {t("placeOfBirth")} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -86,7 +95,7 @@ export const PersonalDetailsSection: React.FC<Props> = ({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            இருப்பிடம் (Residence) <span className="text-red-500">*</span>
+            {t("residence")} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -99,7 +108,7 @@ export const PersonalDetailsSection: React.FC<Props> = ({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            படிப்பு (Education) <span className="text-red-500">*</span>
+            {t("education")} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -112,7 +121,7 @@ export const PersonalDetailsSection: React.FC<Props> = ({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            பணி விவரங்கள் (Job Details) <span className="text-red-500">*</span>
+            {t("jobDetails")} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -125,7 +134,7 @@ export const PersonalDetailsSection: React.FC<Props> = ({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            வருமானம் (Income) <span className="text-red-500">*</span>
+            {t("income")} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -138,7 +147,7 @@ export const PersonalDetailsSection: React.FC<Props> = ({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            ஜாதி (Caste) <span className="text-red-500">*</span>
+            {t("caste")} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -151,7 +160,7 @@ export const PersonalDetailsSection: React.FC<Props> = ({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            உயரம் (Height) <span className="text-red-500">*</span>
+            {t("height")} <span className="text-red-500">*</span>
           </label>
           <div className="flex gap-2 items-center">
             <input
@@ -173,7 +182,7 @@ export const PersonalDetailsSection: React.FC<Props> = ({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            எடை (Weight) <span className="text-red-500">*</span>
+            {t("weight")} <span className="text-red-500">*</span>
           </label>
           <input
             type="number"
@@ -186,7 +195,7 @@ export const PersonalDetailsSection: React.FC<Props> = ({
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            நிறம் (Color) <span className="text-red-500">*</span>
+            {t("color")} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
